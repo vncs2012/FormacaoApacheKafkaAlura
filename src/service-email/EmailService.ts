@@ -1,9 +1,9 @@
-import { KafkaService } from './KafkaService'
 import { v4 as uuid } from 'uuid';
+import { kafkaConsumer } from '../common-kafka/kafkaConsumer';
 
 class SendEmail {
     public main(): void {
-        const service = new KafkaService(SendEmail.name + uuid(), this.parse, SendEmail.name)
+        const service = new kafkaConsumer(SendEmail.name + `-${uuid()}`, this.parse, SendEmail.name)
         service.consumer('ECOMMERCE_SEND_EMAIL')
     }
 
