@@ -6,7 +6,7 @@ export class kafkaConsumer extends KafkaService implements InKafka {
     constructor(clientId: string, parse?: Function, groupId?: string) {
         super(clientId, parse, groupId)
     }
-    
+
     public async consumer(topic: string | RegExp): Promise<void> {
         const kafka = this.kafka()
         const consumer = kafka.consumer({ groupId: this.groupId })
@@ -19,7 +19,7 @@ export class kafkaConsumer extends KafkaService implements InKafka {
         })
             .then(console.log)
             .catch(err => {
-                console.log(err)
+                console.log(err.message)
                 this.disconnect(consumer)
             })
     }

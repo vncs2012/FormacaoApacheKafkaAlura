@@ -15,8 +15,8 @@ export class KafkaService implements InKafka {
     kafka() {
         return new Kafka({
             clientId: this.clientId,
-            brokers: ['localhost:9092'],
-            logLevel: logLevel.INFO
+            brokers: ['localhost:9092','localhost:9095','localhost:9098'],
+            logLevel: logLevel.ERROR
 
         })
     }
