@@ -11,10 +11,10 @@ export class KafkaProducer extends KafkaService implements InKafka {
         const kafka = this.kafka()
         console.log(value)
         const producer = kafka.producer()
-        const admin = kafka.admin()
-        await admin.describeCluster() .then(ap => console.log(`describeCluster - `, ap))
-        await admin.listGroups() .then(ap => console.log(`listGroups - `, ap))
-        await admin.listTopics() .then(ap => console.log(`listTopics - `, ap))
+        // const admin = kafka.admin()
+        // await admin.describeCluster() .then(ap => console.log(`describeCluster - `, ap))
+        // await admin.listGroups() .then(ap => console.log(`listGroups - `, ap))
+        // await admin.listTopics() .then(ap => console.log(`listTopics - `, ap))
         await producer.connect()
         await producer.send({
             topic: topic,

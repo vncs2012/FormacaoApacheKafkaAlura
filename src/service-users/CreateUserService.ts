@@ -2,6 +2,7 @@ import mongoose, { connect as inibanco } from "mongoose";
 import { kafkaConsumer } from "../common-kafka/kafkaConsumer"
 import { User } from './user.model'
 import { v4 as uuid } from 'uuid';
+import { connect } from "./Connect";
 
 export class CreateUserService {
     private nameClass = CreateUserService.name
@@ -33,20 +34,20 @@ export class CreateUserService {
         }).catch(err => console.error(err))
     }
 }
-
-const connect = async () => {
-    const db = "mongodb://localhost:27017/alura-kafka-user"
-    mongoose.connect(db, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useFindAndModify: false
-    }).then(() => {
-        new CreateUserService().main()
-        return console.log(`Successfully connected to ${db}`);
-    }).catch(error => {
-        console.log("Error connecting to database: ", error);
-        return process.exit(1);
-    });
-};
-connect()
+connect(new CreateUserService)
+// const connect = async () => {
+//     const db = "mongodb://localhost:27017/alura-kafka-user"
+//     mongoose.connect(db, {
+//         useUnifiedTopology: true,
+//         useNewUrlParser: true,
+//         useCreateIndex: true,
+//         useFindAndModify: false
+//     }).then(() => {
+//         new CreateUserService().main()
+//         return console.log(`Successfully connected to ${db}`);
+//     }).catch(error => {
+//         console.log("Error connecting to database: ", error);
+//         return process.exit(1);
+//     });
+// };
+// connect()
