@@ -1,10 +1,10 @@
-import { v4 as uuid } from 'uuid';
 import { kafkaConsumer } from '../common-kafka/kafkaConsumer';
 
 class ReandingReportService {
+    private nameClass = ReandingReportService.name
     public main(): void {
-        const service = new kafkaConsumer(ReandingReportService.name + `-${uuid()}`, this.parse, ReandingReportService.name)
-        service.consumer('USER_GENERATE_READING_REPORT')
+        const service = new kafkaConsumer(this.nameClass, this.parse, this.nameClass)
+        service.consumer('ECOMMERCE_USER_GENERATE_READING_REPORT')
     }
 
     private parse(topic, partition, message): void {

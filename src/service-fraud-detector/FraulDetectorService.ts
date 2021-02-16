@@ -1,11 +1,13 @@
 import { v4 as uuid } from 'uuid';
+import { CorrelationId } from '../common-kafka/CorrelationId';
 import { kafkaConsumer } from '../common-kafka/kafkaConsumer';
 import { KafkaProducer } from '../common-kafka/KafkaProducer';
 import { Order } from './Order';
 
 class FraulDetectorService {
+    private className: string = FraulDetectorService.name
     public main(): void {
-        const service = new kafkaConsumer(FraulDetectorService.name + `-${uuid()}`, this.parse, FraulDetectorService.name)
+        const service = new kafkaConsumer(this.className, this.parse, this.className)
         service.consumer('ECOMMERCE_NEW_ORDER')
     }
 
@@ -13,14 +15,14 @@ class FraulDetectorService {
         const dataObject = JSON.parse(message.value)
         const dataJson = message.value
         let isFraud = dataObject.amount >= 4500
-        const producer = new KafkaProducer(FraulDetectorService.name + `-${dataObject.orderId}`)
+        const producer = new KafkaProducer(this.className)
         if (isFraud) {
             console.log(`Order is Fraud -> value:${dataJson}`)
-            producer.producer('ECOMMERCE_ORDER_REJECTED', dataObject.email, dataJson)
+            producer.producer('ECOMMERCE_ORDER_REJECTED', new CorrelationId(this.className), dataObject.email, dataJson)
         }
         else {
             console.log(`Approved:->${dataJson}`)
-            producer.producer('ECOMMERCE_ORDER_APPROVED', dataObject.email, dataJson)
+            producer.producer('ECOMMERCE_ORDER_APPROVED', new CorrelationId(this.className), dataObject.email, dataJson)
         }
     }
 }

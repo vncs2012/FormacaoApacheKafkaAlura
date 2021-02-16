@@ -10,7 +10,10 @@ class LogService {
     }
 
     private parse(topic, partition, message): void {
-        console.log(`Parse funcioton -> value:${message.value} , Topic:${topic}, Partition:${partition}`)
+        const headers = JSON.parse(message.headers.correlationid)
+        console.log('------------------------------------------------------------------------------------------')
+        console.log(`Topic->${topic}\nCorrelation Id -> ${headers.id._id}\ndata -> ${message.value}`)
+        console.log('------------------------------------------------------------------------------------------')
     }
 }
 new LogService().main()
