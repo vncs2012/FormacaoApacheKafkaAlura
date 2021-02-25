@@ -35,19 +35,3 @@ export class CreateUserService {
     }
 }
 connect(new CreateUserService)
-// const connect = async () => {
-//     const db = "mongodb://localhost:27017/alura-kafka-user"
-//     mongoose.connect(db, {
-//         useUnifiedTopology: true,
-//         useNewUrlParser: true,
-//         useCreateIndex: true,
-//         useFindAndModify: false
-//     }).then(() => {
-//         new CreateUserService().main()
-//         return console.log(`Successfully connected to ${db}`);
-//     }).catch(error => {
-//         console.log("Error connecting to database: ", error);
-//         return process.exit(1);
-//     });
-// };
-// connect()

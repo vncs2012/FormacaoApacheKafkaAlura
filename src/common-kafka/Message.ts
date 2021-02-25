@@ -15,12 +15,7 @@ export class Message {
             payload: this.payload
         })
     }
-
-    public get getPayload(): any {
-        return this.payload
-    }
-
-    public getId(): CorrelationId {
+    public get getCorrelationId(): CorrelationId {
         return this.id
     }
 }

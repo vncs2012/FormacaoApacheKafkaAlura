@@ -5,7 +5,7 @@ import { Order } from "./Order"
 
 
 export const NewOrderHttp = (req, res) => {
-    const nameClass: string = NewOrderHttp.name + `-${uuid()}`
+    const nameClass: string = NewOrderHttp.name 
     const service = new KafkaProducer(nameClass)
     try {
         let email: string = req.query.email
