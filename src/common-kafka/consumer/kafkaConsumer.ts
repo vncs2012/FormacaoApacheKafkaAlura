@@ -1,5 +1,5 @@
-import { InKafka } from "./InKafka";
-import { KafkaService } from "./KafkaService";
+import { InKafka } from "../service/InKafka";
+import { KafkaService } from "../service/KafkaService";
 
 export class kafkaConsumer extends KafkaService implements InKafka {
 
@@ -20,8 +20,8 @@ export class kafkaConsumer extends KafkaService implements InKafka {
             .then(console.log)
             .catch(err => {
                 console.log(err.message)
+                this.disconnect(consumer)
             })
-        this.disconnect(consumer)
     }
 
 }

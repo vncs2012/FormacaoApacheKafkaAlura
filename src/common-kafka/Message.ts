@@ -4,6 +4,7 @@ export class Message {
 
     protected id: CorrelationId
     protected payload: any
+
     constructor(id: CorrelationId, payload: any) {
         this.id = id
         this.payload = payload
@@ -15,7 +16,7 @@ export class Message {
             payload: this.payload
         })
     }
-    public get getCorrelationId(): CorrelationId {
+    public get getCorrelationId(): CorrelationId{
         return this.id
     }
 }

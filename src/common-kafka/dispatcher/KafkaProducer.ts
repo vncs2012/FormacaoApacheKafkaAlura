@@ -1,8 +1,8 @@
-import { CorrelationId } from './CorrelationId'
-import { routeCorrelationId } from './functions'
-import { InKafka } from './InKafka'
-import { KafkaService } from './KafkaService'
-import { Message } from './Message'
+import { CorrelationId } from '../CorrelationId'
+import { KafkaService } from '../service/KafkaService'
+import { InKafka } from '../service/InKafka'
+import { Message } from '../Message'
+import { deadLetter } from './DeadLetter'
 
 export class KafkaProducer extends KafkaService implements InKafka {
 
@@ -11,6 +11,7 @@ export class KafkaProducer extends KafkaService implements InKafka {
     }
 
     public producer = async (topic: string, correlationid: CorrelationId, key: string, value: string): Promise<void> => {
+        correlationid.continueWith("_"+topic)
         const kafka = this.kafka()
         const headers = new Message(correlationid, value)
         const producer = kafka.producer()
@@ -28,7 +29,7 @@ export class KafkaProducer extends KafkaService implements InKafka {
         })
             .then(ap => console.log(`Sucesso - `, ap)).
             catch(err => {
-                this.deadLetter(headers, key, value)
+                deadLetter(headers, key, value)
             })
         await producer.disconnect()
     }

@@ -1,6 +1,6 @@
 import { routeCorrelationId } from "../common-kafka/functions";
-import { kafkaConsumer } from "../common-kafka/kafkaConsumer"
-import { KafkaProducer } from "../common-kafka/KafkaProducer";
+import { kafkaConsumer } from "../common-kafka/consumer/kafkaConsumer"
+import { KafkaProducer } from "../common-kafka/dispatcher/KafkaProducer";
 import { connect } from "./Connect";
 import { User } from './user.model'
 

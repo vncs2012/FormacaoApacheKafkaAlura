@@ -1,4 +1,4 @@
-import { kafkaConsumer } from '../common-kafka/kafkaConsumer';
+import { kafkaConsumer } from '../common-kafka/consumer/kafkaConsumer';
 
 class ReandingReportService {
     private nameClass = ReandingReportService.name

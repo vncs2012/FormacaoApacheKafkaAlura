@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { kafkaConsumer } from '../common-kafka/kafkaConsumer';
+import { kafkaConsumer } from '../common-kafka/consumer/kafkaConsumer';
 
 class LogService {
     public main(): void {

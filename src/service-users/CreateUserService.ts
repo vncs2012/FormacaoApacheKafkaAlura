@@ -1,5 +1,5 @@
 import mongoose, { connect as inibanco } from "mongoose";
-import { kafkaConsumer } from "../common-kafka/kafkaConsumer"
+import { kafkaConsumer } from "../common-kafka/consumer/kafkaConsumer"
 import { User } from './user.model'
 import { v4 as uuid } from 'uuid';
 import { connect } from "./Connect";

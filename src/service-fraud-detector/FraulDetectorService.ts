@@ -1,15 +1,25 @@
-import { kafkaConsumer } from '../common-kafka/kafkaConsumer';
-import { KafkaProducer } from '../common-kafka/KafkaProducer';
-import { routeCorrelationId } from '../common-kafka/functions'
+import { consumerService } from '../common-kafka/consumer/ConsumerService';
+import { ServiceFactory } from '../common-kafka/consumer/ServiceFactory';
+import { ServiceRunner } from '../common-kafka/consumer/ServiceRunner';
+import { KafkaProducer } from '../common-kafka/dispatcher/KafkaProducer';
+import { routeCorrelationId } from '../common-kafka/functions';
 
-class FraulDetectorService {
+class FraulDetectorService implements consumerService<FraulDetectorService>, ServiceFactory<FraulDetectorService> {
+
     private className: string = FraulDetectorService.name
     public main(): void {
-        const service = new kafkaConsumer(this.className, this.parse, this.className)
-        service.consumer('ECOMMERCE_NEW_ORDER')
+        new ServiceRunner(this.create(FraulDetectorService)).start(3)
     }
-
-    private parse(topic, partition, message): void {
+    getConsumerGroup(): string {
+        return this.className
+    }
+    getTopic(): string {
+        return 'ECOMMERCE_NEW_ORDER'
+    }
+    create(type: new (...args: any[]) => FraulDetectorService, ...args: any[]): consumerService<FraulDetectorService> {
+        return new type(...args)
+    }
+    parse(topic, partition, message): void {
         const dataObject = JSON.parse(message.value)
         const dataJson = message.value
         let isFraud = dataObject.amount >= 4500

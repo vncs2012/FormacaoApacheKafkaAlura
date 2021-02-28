@@ -1,5 +1,5 @@
 import { CorrelationId } from "../common-kafka/CorrelationId";
-import { KafkaProducer } from "../common-kafka/KafkaProducer"
+import { KafkaProducer } from "../common-kafka/dispatcher/KafkaProducer"
 
 export const GenerateOrder = (req, res) => {
     const nameClass: string = GenerateOrder.name
