@@ -11,10 +11,10 @@ export class KafkaProducer extends KafkaService implements InKafka {
     }
 
     public producer = async (topic: string, correlationid: CorrelationId, key: string, value: string): Promise<void> => {
-        correlationid.continueWith("_"+topic)
+        correlationid.continueWith("_" + topic)
         const kafka = this.kafka()
         const headers = new Message(correlationid, value)
-        const producer = kafka.producer()
+        const producer = kafka.producer({ idempotent: true, maxInFlightRequests: 1 })
         await producer.connect()
         await producer.send({
             topic: topic,
@@ -27,7 +27,10 @@ export class KafkaProducer extends KafkaService implements InKafka {
                 },
             ],
         })
-            .then(ap => console.log(`Sucesso - `, ap)).
+            .then(ap => {
+                producer.transaction()   
+                console.log(`Sucesso - `, ap)
+            }).
             catch(err => {
                 deadLetter(headers, key, value)
             })

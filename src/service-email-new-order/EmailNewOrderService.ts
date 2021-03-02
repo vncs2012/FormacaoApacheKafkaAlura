@@ -8,7 +8,7 @@ class EmailNewOrderService implements consumerService<EmailNewOrderService>, Ser
     public nameClass: string = EmailNewOrderService.name
 
     public main(): void {
-        new ServiceRunner(this.create(EmailNewOrderService)).start(3)
+        new ServiceRunner(this.create(EmailNewOrderService)).start(1)
     }
 
     getConsumerGroup(): string {

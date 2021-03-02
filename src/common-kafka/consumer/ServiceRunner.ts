@@ -1,6 +1,5 @@
-import { consumerService } from "./ConsumerService"
-import { ServiceProvider } from "./ServiceProvider"
-import { parentPort } from 'worker_threads';
+import { consumerService } from "./ConsumerService";
+import { ServiceProvider } from "./ServiceProvider";
 
 export class ServiceRunner<T> {
 

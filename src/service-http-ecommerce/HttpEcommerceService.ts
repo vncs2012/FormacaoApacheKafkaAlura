@@ -1,4 +1,5 @@
 import express from "express";
+import { connect } from "../common-database/Connect";
 import { GenerateOrder } from "./GenerateOrder";
 import { NewOrderHttp } from "./NewOrderHttp";
 
@@ -19,4 +20,4 @@ class HttpEcommerceService {
     }
 }
 
-new HttpEcommerceService().main()
+connect(new HttpEcommerceService,'alura-kafka-order')

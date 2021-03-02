@@ -1,7 +1,7 @@
 import { routeCorrelationId } from "../common-kafka/functions";
 import { kafkaConsumer } from "../common-kafka/consumer/kafkaConsumer"
 import { KafkaProducer } from "../common-kafka/dispatcher/KafkaProducer";
-import { connect } from "./Connect";
+import { connect } from "../common-database/Connect";
 import { User } from './user.model'
 
 export class BatchSendMessagemService {
@@ -12,21 +12,21 @@ export class BatchSendMessagemService {
     }
 
     private parse(topic, partition, message): void {
-        const nameClass =  BatchSendMessagemService.name
+        const nameClass = BatchSendMessagemService.name
         const headers = JSON.parse(message.headers.correlationid)
         const correlationId = routeCorrelationId(headers.id, nameClass)
-      
+
         const service = new KafkaProducer(this.nameClass)
 
         User.find().then(data => {
             data.map(user => {
                 const userJson = JSON.stringify(user._id)
                 console.log(userJson)
-                service.producer('ECOMMERCE_USER_GENERATE_READING_REPORT',correlationId, userJson, userJson)
+                service.producer('ECOMMERCE_USER_GENERATE_READING_REPORT', correlationId, userJson, userJson)
             })
         }).catch(err => console.error(err))
     }
 }
 
-connect(new BatchSendMessagemService)
+connect(new BatchSendMessagemService, 'alura-kafka-user')
 

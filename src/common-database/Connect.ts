@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
-import { BatchSendMessagemService } from "./BatchSendMessagemService";
-import { CreateUserService } from "./CreateUserService";
 
-export const connect = async (servico: BatchSendMessagemService | CreateUserService) => {
-    const db = "mongodb://localhost:27017/alura-kafka-user"
+export const connect = async (servico: any, database: string) => {
+    const db = "mongodb://localhost:27017/" + database
     mongoose.connect(db, {
         useUnifiedTopology: true,
         useNewUrlParser: true,

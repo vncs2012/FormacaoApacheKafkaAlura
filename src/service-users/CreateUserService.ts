@@ -1,17 +1,30 @@
-import mongoose, { connect as inibanco } from "mongoose";
-import { kafkaConsumer } from "../common-kafka/consumer/kafkaConsumer"
-import { User } from './user.model'
 import { v4 as uuid } from 'uuid';
-import { connect } from "./Connect";
+import { consumerService } from "../common-kafka/consumer/ConsumerService";
+import { ServiceFactory } from "../common-kafka/consumer/ServiceFactory";
+import { ServiceRunner } from "../common-kafka/consumer/ServiceRunner";
+import { connect } from "../common-database/Connect";
+import { User } from './user.model';
 
-export class CreateUserService {
+export class CreateUserService implements ServiceFactory<CreateUserService>, consumerService<CreateUserService> {
+
     private nameClass = CreateUserService.name
     public main(): void {
-        const service = new kafkaConsumer(this.nameClass, this.parse, this.nameClass)
-        service.consumer('ECOMMERCE_NEW_ORDER')
+        new ServiceRunner(this.create(CreateUserService)).start(1)
     }
 
-    private parse(topic, partition, message): void {
+    getConsumerGroup(): string {
+        return this.nameClass
+    }
+
+    getTopic(): string {
+        return 'ECOMMERCE_NEW_ORDER'
+    }
+
+    create(type: new (...args: any[]) => CreateUserService, ...args: any[]): consumerService<CreateUserService> {
+        return new type(...args)
+    }
+
+    parse(topic, partition, message): void {
         const dataObject = JSON.parse(message.value)
         const dataJson = message.value
         var email = dataObject.email
@@ -34,4 +47,4 @@ export class CreateUserService {
         }).catch(err => console.error(err))
     }
 }
-connect(new CreateUserService)
+connect(new CreateUserService,'alura-kafka-user')
