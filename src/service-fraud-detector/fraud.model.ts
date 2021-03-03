@@ -1,19 +1,18 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface Fraud extends Document {
-    uuid: String,
+    fraud_id: String,
     is_fraud: Boolean
 }
 
 const fraudSchema: Schema = new Schema({
-    uuid: {
+    fraud_id: {
         type: String,
-        unique: true,
-        required: true,
+        unique: true
     },
     is_fraud: {
         type: Boolean,
-        required: true,
+        required: true
     },
 })
 

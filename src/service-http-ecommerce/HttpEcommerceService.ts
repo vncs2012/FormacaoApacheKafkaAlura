@@ -1,3 +1,4 @@
+import bodyParser from "body-parser";
 import express from "express";
 import { connect } from "../common-database/Connect";
 import { GenerateOrder } from "./GenerateOrder";
@@ -13,6 +14,7 @@ class HttpEcommerceService {
         })
         app.get('/new', NewOrderHttp)
         app.get('/admin/generete-report', GenerateOrder)
+        app.use(bodyParser.json())
         
         app.listen(port, () => {
             console.log(`Example app listening at http://localhost:${port}`)

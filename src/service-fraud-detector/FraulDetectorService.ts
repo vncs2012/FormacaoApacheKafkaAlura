@@ -21,13 +21,14 @@ class FraulDetectorService implements consumerService<FraulDetectorService>, Ser
     create = (type: new (...args: any[]) => FraulDetectorService, ...args: any[]): consumerService<FraulDetectorService> => {
         return new type(...args)
     }
-    parse = (topic, partition, message): void => {
+    parse = async (topic, partition, message): Promise<void> => {
+        console.log('entrou')
         const dataObject = JSON.parse(message.value)
         const dataJson = message.value
         const uuid = dataObject.uuid
-        if (this.wasPorecessed(uuid)) {
+        console.log(await this.wasPorecessed(uuid))
+        if (await this.wasPorecessed(uuid) === null) {
             let isFraud = dataObject.amount >= 4500
-
             const headers = JSON.parse(message.headers.correlationid)
             const correlationId = routeCorrelationId(headers.id, this.className)
             const producer = new KafkaProducer(this.className)
@@ -44,11 +45,14 @@ class FraulDetectorService implements consumerService<FraulDetectorService>, Ser
         }
     }
     private wasPorecessed = async (uuid: string): Promise<Fraud> => {
-        return await Fraud.findOne({ uuid })
+        return await Fraud.findOne({ fraud_id: uuid })
     }
 
-    private insertFraud = async (id: string, is_fraud: Boolean) => {
-        const newFraud = new Fraud({ uuid: id, is_fraud: is_fraud })
+    insertFraud = async (id: any, is_fraud: Boolean) => {
+        const newFraud = new Fraud()
+        newFraud.fraud_id = id
+        newFraud.is_fraud = is_fraud
+        console.log(newFraud)
         return await newFraud.save()
     }
 }

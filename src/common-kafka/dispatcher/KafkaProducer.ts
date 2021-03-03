@@ -28,7 +28,6 @@ export class KafkaProducer extends KafkaService implements InKafka {
             ],
         })
             .then(ap => {
-                producer.transaction()   
                 console.log(`Sucesso - `, ap)
             }).
             catch(err => {
